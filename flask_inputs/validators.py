@@ -17,7 +17,7 @@ class JsonSchema(object):
 
     def __call__(self, form, field):
         try:
-            jsonschema.validate(field.data, self.schema)
+            jsonschema.validate(field.data, self.schema, format_checker=jsonschema.FormatChecker())
         except jsonschema.ValidationError as e:
             if self.message:
                 raise ValidationError(self.message)
