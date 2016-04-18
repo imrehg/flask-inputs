@@ -7,6 +7,7 @@ from werkzeug.datastructures import MultiDict
 from wtforms.form import BaseForm
 from wtforms.fields import Field
 
+from six import iteritems
 
 class Inputs(object):
     #: flask.Request attributes available for validation
@@ -31,7 +32,7 @@ class Inputs(object):
                 fields = dict()
 
                 if isinstance(input, dict):
-                    for field, validators in input.iteritems():
+                    for field, validators in iteritems(input):
                         fields[field] = Field(validators=validators)
                 elif isinstance(input, collections.Iterable):
                     fields['_input'] = Field(validators=input)
@@ -66,7 +67,7 @@ class Inputs(object):
         """
         success = True
 
-        for attribute, form in self._forms.iteritems():
+        for attribute, form in iteritems(self._forms):
             if '_input' in form._fields:
                 form.process(self._get_values(attribute, coerse=False))
             else:
